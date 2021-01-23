@@ -4,6 +4,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import utils.GetConfig;
 import utils.HttpUtils;
+import utils.QmsgJ;
+
 import java.util.HashMap;
 
 /**
@@ -79,7 +81,8 @@ public class Service {
             JSONObject collector = json.getJSONObject("datas").getJSONObject("collector");
             if (!collector.getString("senderUserName").equals(config.getString("senderUserName"))) {
                 System.out.println(collector.getString("senderUserName"));
-                System.out.println(config.getString("senderUsername"));
+                System.out.println(config.getString("senderUserName"));
+                QmsgJ.pushToQQ("辅导员名字错误");
                 return null;
             }
             String wid = collector.getString("wid");
@@ -101,6 +104,7 @@ public class Service {
      */
     public JSONObject getFormFields(String params,HashMap<String,String> headers){
         String result= HttpUtils.sendPost(config.getHost()+config.getFormFields(),params,headers);
+        System.err.println(result);
         return  JSONObject.fromObject(result);
     }
 
