@@ -51,7 +51,7 @@ public class Start {
 //####################第二次请求获取任务详情###############################################
         String collectorWid=String.valueOf(result1);
 //————————————————————————————————————此处测试——————————————————————————————————————————————
-//        String collectorWid="35140";
+//        String collectorWid="35872";
         JSONObject result2=service.detialCollector("{\"collectorWid\":\""+collectorWid+"\"}",headers);//接受返回的json
         System.out.println(result2);
         //6.获取表单具体内容
@@ -70,7 +70,10 @@ public class Start {
         headers.put("extension", "1");
         headers.put("Cpdaily-Extension", CpdailyExtension.generateCpdailyExtension(longitude,latitude));
         String body= HandleForm.getSubmitForm(formWid,collectorWid,schoolTaskWid,result3,longitude,latitude);//生成提交表单
-        VerifyForm.verify(body);//校验表单
+        if(!VerifyForm.verify(body)){//校验表单
+            QmsgJ.pushToQQ("表单校验失败,暂不提交");
+            return;
+        }
         String s = service.submitForm(config.getHost() + config.getSubmitForm(), body, headers);//提交后返回的信息
         System.out.println(s);
         QmsgJ.pushToQQ(s);
