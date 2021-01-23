@@ -5,7 +5,6 @@ import net.sf.json.JSONObject;
 import utils.GetConfig;
 import utils.HttpUtils;
 import utils.QmsgJ;
-
 import java.util.HashMap;
 
 /**
