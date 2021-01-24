@@ -37,7 +37,7 @@ public class CookieLogin {
                     QmsgJ.pushToQQ("当前cookie有效");
                     try {
                         System.out.println("开始维持cookie存活");
-                        Thread.sleep(1000 * 10*60);//10s,云函数内部时钟1s大概是20或40s、60,6分钟
+                        Thread.sleep(1000 * 10*60);
                     } catch (InterruptedException e) {
                         QmsgJ.pushToQQ("子线程睡眠异常");
                     }
