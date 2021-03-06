@@ -28,12 +28,15 @@ public class HttpUtils {
         StringBuilder result = new StringBuilder();
         try {
             URL realUrl = new URL(url);
+//            System.out.println(realUrl);
             HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
             // 必须设置false，否则会自动重定向到目标地址
             conn.setInstanceFollowRedirects(false);
             if (headers != null) {
                 Set<Entry<String, String>> set = headers.entrySet();
                 for (Entry<String, String> header : set) {
+                    //打印请求头参数
+                    System.out.println(header.getKey()+"\t"+ header.getValue());
                     conn.setRequestProperty(header.getKey(), header.getValue());
                 }
             }
@@ -46,11 +49,13 @@ public class HttpUtils {
             }
 
             out.flush();
+//            System.out.println(conn.getResponseCode());
             in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
             String line;//返回的json字符串
             while ((line = in.readLine()) != null) {
                 result.append(line) ;
             }
+            System.out.println();
         } catch (Exception e) {
             System.out.println("发送 POST 请求出现异常！");
             e.printStackTrace();

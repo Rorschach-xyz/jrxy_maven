@@ -5,6 +5,8 @@ import utils.GetConfig;
 import utils.HttpUtils;
 import utils.QmsgJ;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
@@ -25,38 +27,39 @@ public class CookieLogin {
     //开始用cookie登录
     public boolean login(HashMap<String, String> headers) {
         //1.初始化post请求内容
-        if (cookie==null) {
+        if (cookie == null) {
             System.out.println("未填入cookie");
             QmsgJ.pushToQQ("未填入cookie");
             return false;
         }
         if (testCookie(headers)) {
-            new Thread(()->{//子线程只维持一天,因为每天定时触发
-                int i=1;
-                while(testCookie(headers)&&i<=144){
-                    QmsgJ.pushToQQ("当前cookie有效");
-                    try {
-                        System.out.println("开始维持cookie存活");
-                        Thread.sleep(1000 * 10*60);
-                    } catch (InterruptedException e) {
-                        QmsgJ.pushToQQ("子线程睡眠异常");
-                    }
-                    i++;
-                }
-                QmsgJ.pushToQQ("子线程关闭，cookie以维持" + i + "次");
-            }).start();
+//            new Thread(() -> {//子线程只维持一天,因为每天定时触发
+//                int i = 1;
+//                while (testCookie(headers) && i <= 144) {
+//                    QmsgJ.pushToQQ("当前cookie有效");
+//                    try {
+//                        System.out.println("开始维持cookie存活");
+//                        Thread.sleep(1000 * 10 * 60);
+//                    } catch (InterruptedException e) {
+//                        QmsgJ.pushToQQ("子线程睡眠异常");
+//                    }
+//                    i++;
+//                }
+//                QmsgJ.pushToQQ("子线程关闭，cookie以维持" + i + "次");
+//            }).start();
             return true;
         }
         return false;
     }
 
-    public boolean testCookie(HashMap<String, String> headers) {
+    public boolean testCookie(HashMap<String, String> headers)  {
         String api_login = HttpUtils.sendPost(config.getHost() + config.getString("api_login"), null, headers);
-        JSONObject json = JSONObject.fromObject(api_login);
-        if (json.getJSONObject("datas").getBoolean("hasLogin")) {
-            return true;
-        }
-        QmsgJ.pushToQQ("cookie已失效");
+            JSONObject json = JSONObject.fromObject(api_login);
+
+            if (json.getJSONObject("datas").getBoolean("hasLogin")) {
+                return true;
+            }
+            //QmsgJ.pushToQQ("cookie已失效");
         return false;
     }
 }

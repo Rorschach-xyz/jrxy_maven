@@ -16,6 +16,7 @@ public class Start {
        return String.format("测试通过哦\t"+GetTime.getTime());
     }
     public static void main(String[] test) {
+        System.out.println("开始执行");
         //1.获取配置文件
         GetConfig config = GetConfig.getInstance();
         //获取服务
@@ -27,15 +28,15 @@ public class Start {
         headers.put("Content-Type", config.getString("Content-Type"));
         headers.put("User-Agent", config.getString("User-Agent"));
         headers.put("Connection", "Keep-Alive");
-        headers.put("Accept-Encoding", "gzip");
+//        headers.put("Accept-Encoding", "gzip");//打开会出现乱码，未知
         //2.测试Cookie是否可用
-//        CookieLogin cookieLogin = new CookieLogin(headers);
-//        if (!cookieLogin.login(headers)) {
-//            System.out.println("登录失败,请检查cookie");
-//            QmsgJ.pushToQQ("登录失败,请检查cookie");
-//            return;
-//        }
-//        System.out.println("登录成功");
+        CookieLogin cookieLogin = new CookieLogin(headers);
+        if (!cookieLogin.login(headers)) {
+            System.out.println("登录失败,请检查cookie");
+            QmsgJ.pushToQQ("登录失败,请检查cookie");
+            return;
+        }
+        System.out.println("登录成功");
         //延迟提交
         Delay.getDelay();
         //3.登录成功，开始获取表单

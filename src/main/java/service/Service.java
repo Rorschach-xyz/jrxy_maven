@@ -97,8 +97,8 @@ public class Service {
 
     /**
      * 获取表单内容
-     * @param params
-     * @param headers
+     * @param params 请求参数
+     * @param headers 请求头
      * @return 返回表单具体内容
      */
     public JSONObject getFormFields(String params,HashMap<String,String> headers){
